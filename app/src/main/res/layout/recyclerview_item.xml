@@ -11,18 +11,17 @@
         android:layout_height="80dp"
         android:id="@+id/circleimageview"
         android:src="@mipmap/ic_launcher"/>
-    
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Burger"
-        android:id="@+id/recycle_nameview"
+
+    <CheckBox
+        android:id="@+id/checkbox_recycle_nameview"
         android:layout_toRightOf="@+id/circleimageview"
         android:textColor="#000"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="30dp"
+        android:layout_marginLeft="20dp"
         android:textSize="20sp"
-    />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Burger" />
 
 
 </RelativeLayout>

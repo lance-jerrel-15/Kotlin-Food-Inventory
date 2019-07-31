@@ -1,32 +1,25 @@
 package Adapter
 
+
+import Model.Foods
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
-import android.widget.TextView
-import android.widget.Toast
-
 import androidx.recyclerview.widget.RecyclerView
-
 import com.example.foods.R
-
-import java.util.ArrayList
-
-import android.content.ContentValues.TAG
+import android.widget.*
+import com.example.foods.MainActivity.Companion.count
+import com.example.foods.MainActivity.Companion.foods
+import com.example.foods.MainActivity.Companion.selection_list
 import de.hdodenhof.circleimageview.CircleImageView
 
-open class RecyclerAdapter(val mContext: Context, imageNames: ArrayList<String>, image: ArrayList<Int>) : RecyclerView.Adapter<ViewHolder>() {
 
-
-    private var mImageNames = ArrayList<String>()
-    private var mImage = ArrayList<Int>()
+open class RecyclerAdapter(val mContext: Context, imageNames: ArrayList<Foods>) : RecyclerView.Adapter<ViewHolder>() {
 
     init {
-        mImageNames = imageNames
-        mImage = image
+        mImagenames = imageNames
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -37,59 +30,91 @@ open class RecyclerAdapter(val mContext: Context, imageNames: ArrayList<String>,
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         Log.d(TAG, "onBindViewHolder: Called.")
 
-        holder.imageName.text = mImageNames[position]
-        holder.image.setImageResource(mImage[position])
-
-        holder.recycler_layout.setOnClickListener {
-            Log.d(TAG, "onclick:click on:" + mImageNames[position])
-            Toast.makeText(mContext, mImageNames[position] + " Selected", Toast.LENGTH_SHORT).show()
-            val clickedfoodName = mImageNames[position]
+        holder.imageNameCheckbox.setText(mImagenames.get(position).getmImagename())
+        holder.image.setImageResource(mImagenames[position].getmImage())
 
 
+        val foodposition = foods!!.get(position)
+
+        holder.recycler_layout.setOnClickListener { it: View? ->
+            Log.d(TAG, "onclick:click on:" + mImagenames[position])
+            Toast.makeText(mContext, mImagenames.get(position).getmImagename() + " Selected", Toast.LENGTH_SHORT).show()
+            //val clickfoodName = mImagenames[position]
         }
-    }
 
-    /*
-     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-         Log.d(TAG, "onBindViewHolder: Called.")
+        holder.imageNameCheckbox.setOnCheckedChangeListener() { buttonView, isChecked ->
+            Log.d(TAG, "onclick:click on:" + mImagenames[position])
 
-        holder.imageName.text = mImageNames[position]
-        holder.image.setImageResource(mImage[position])
+            //val foodposition = foods!!.get(position)
 
-        holder.recycler_layout.setOnClickListener {
-            Log.d(TAG, "onclick:click on:" + mImageNames[position])
-            Toast.makeText(mContext, mImageNames[position] + " Selected", Toast.LENGTH_SHORT).show()
-            val clickedfoodName = mImageNames[position]
-
-
+                if(buttonView.isChecked()) {
+                    selection_list.add(foodposition)
+                    count = count + 1
+                    Toast.makeText(mContext,"" + count + " item Selected ", Toast.LENGTH_SHORT).show()
+                    } else {
+                    selection_list.remove(foodposition)
+                    count = count - 1
+                    Toast.makeText(mContext,"" + count + " item Selected ", Toast.LENGTH_SHORT).show()
+                }
             }
-        }*/
+        }
 
         override fun getItemCount(): Int {
-        return mImageNames.size
+            return mImagenames.size
         }
 
         companion object {
-        private val TAG = "RecyclerAdapter"
+            var mImagenames = ArrayList<Foods>()
+            var Foods: java.util.ArrayList<Foods>? = null
+            private val TAG = "RecyclerAdapter"
+
+
+            fun updateAdapter(list: ArrayList<Foods>) {
+                for (Foods in list){
+                    mImagenames.remove(Foods)
+
+                }
+            }
         }
-
-
-
     }
+open class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
 
-     open class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-
-        internal var image: CircleImageView
-        internal var imageName: TextView
-        internal var recycler_layout: RelativeLayout
+         var image: CircleImageView
+         var imageNameCheckbox: CheckBox
+         var recycler_layout: RelativeLayout
+         lateinit var MainActivity: Context
 
         init {
             image = itemView.findViewById(R.id.circleimageview)
-            imageName = itemView.findViewById(R.id.recycle_nameview)
+            imageNameCheckbox = itemView.findViewById(R.id.checkbox_recycle_nameview)
             recycler_layout = itemView.findViewById(R.id.recycler_layout)
+            imageNameCheckbox.setOnClickListener(this)
+
+        }
+
+        override fun onClick(v: View) {
+
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
